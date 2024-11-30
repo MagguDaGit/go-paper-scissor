@@ -8,25 +8,19 @@ import (
 
 func PlayRandomGames(numberOfGames int) models.GameSummary {
 	start := time.Now()
-	results := make([]models.Result, numberOfGames, numberOfGames)
-	for i := 0; i < numberOfGames; i++ {
-		result := PlayRandomGame()
-		results[i] = result
-	}
-	var elapsed float64 = time.Since(start).Abs().Seconds()
-	summary := models.ConstructSummary(results, elapsed)
-	return summary
-}
-
-func PlayRandomGame() models.Result {
 	player1 := models.RandomPlayer{}
 	player1.Name = models.PLAYER_1
 
 	player2 := models.RandomPlayer{}
 	player2.Name = models.PLAYER_2
-
-	return play(player1, player2)
-
+	results := make([]models.Result, numberOfGames, numberOfGames)
+	for i := 0; i < numberOfGames; i++ {
+		result := play(player1, player2)
+		results[i] = result
+	}
+	var elapsed float64 = time.Since(start).Abs().Seconds()
+	summary := models.ConstructSummary(results, elapsed)
+	return summary
 }
 
 // Direct comparrison with predefined rules. Could use map lookup, modulo or bitmasking.
