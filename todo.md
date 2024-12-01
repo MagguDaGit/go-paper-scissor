@@ -1,6 +1,8 @@
 ## TODO: 
 1. Look for optimizations to how the games are played 
-2. Make a web server
+2. Make a web server (Barebones) ✅ 
+    2.1 - Make it for different types of games, 
+    2.2 - Make it FASTER (Games takes 0,00007 seconds, but the response takes 2 seconds? )
 3. Make other types of games: 
     - Queued games, where a number of rounds is specified, and executed in quick succession 
     - Interactive games: Each round is played one by one and each round waits for a input by user
@@ -8,12 +10,9 @@
     - Opponent where the moves are based on a algorithm  for the best possible chance to win (Might need to make "opponent" logic for this)
     - Opponent where the moves are random ✅
 
-
-
-
-
-
 ## Optimizations 
+Look in performance.md ()[./performance.md]
+
 
 ### Random games:
 These are the optimizations done for random moves simulation: 

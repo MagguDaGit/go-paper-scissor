@@ -86,48 +86,48 @@ func (r Result) isDraw() bool {
 
 // A single object to summarize a series of games, uses the list of results to construct the summary
 type GameSummary struct {
-	results     []Result
-	duration    float64
-	winner      string
-	player1Wins int
-	player2Wins int
-	draws       int
+	Results     []Result
+	Duration    float64
+	Winner      string
+	Player1Wins int
+	Player2Wins int
+	Draws       int
 }
 
 func ConstructSummary(results []Result, duration float64) GameSummary {
 	summary := GameSummary{}
-	summary.duration = duration
+	summary.Duration = duration
 	for i := 0; i < len(results); i++ {
 		if results[i].isDraw() {
-			summary.draws = summary.draws + 1
+			summary.Draws = summary.Draws + 1
 		} else if results[i].getWinner() == string(PLAYER_1) {
-			summary.player1Wins = summary.player1Wins + 1
+			summary.Player1Wins = summary.Player1Wins + 1
 		} else if results[i].getWinner() == string(PLAYER_2) {
-			summary.player2Wins = summary.player2Wins + 1
+			summary.Player2Wins = summary.Player2Wins + 1
 		} else {
 			fmt.Println("This should never be called... ")
 		}
 	}
-	if summary.player1Wins > summary.player2Wins {
-		summary.winner = string(PLAYER_1)
-	} else if summary.player2Wins > summary.player1Wins {
-		summary.winner = string(PLAYER_2)
+	if summary.Player1Wins > summary.Player2Wins {
+		summary.Winner = string(PLAYER_1)
+	} else if summary.Player2Wins > summary.Player1Wins {
+		summary.Winner = string(PLAYER_2)
 	} else {
-		summary.winner = "DRAW"
+		summary.Winner = "DRAW"
 	}
-	summary.results = results
+	summary.Results = results
 	return summary
 
 }
 
 func (summary GameSummary) PrintSummary() {
 	fmt.Println("--- GAME SUMMARY ---")
-	fmt.Printf("Number of games played: %v \n", len(summary.results))
-	fmt.Printf("Duration of games: %v seconds \n", summary.duration)
-	fmt.Printf("Player 1 wins: %v \n", summary.player1Wins)
-	fmt.Printf("Player 2 wins: %v \n", summary.player2Wins)
+	fmt.Printf("Number of games played: %v \n", len(summary.Results))
+	fmt.Printf("Duration of games: %v seconds \n", summary.Duration)
+	fmt.Printf("Player 1 wins: %v \n", summary.Player1Wins)
+	fmt.Printf("Player 2 wins: %v \n", summary.Player2Wins)
 
-	fmt.Printf("Draws: %v \n", summary.draws)
-	fmt.Printf("Winner: %s \n", summary.winner)
+	fmt.Printf("Draws: %v \n", summary.Draws)
+	fmt.Printf("Winner: %s \n", summary.Winner)
 	fmt.Println("--- END OF SUMMARY ---")
 }
