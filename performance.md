@@ -76,7 +76,7 @@ Current state of the webserver:
 For 10 random games requested by the api, using: curl -o /dev/null -s -w 'Total: %{time_total}s\n'  localhost:8080/random/test 
 The total time to response was: 0,000425s 
 
-Using browser (chrome) the total time waitnig for server response was
+Using browser (chrome) the total time waiting for server response was
 0,00142 seconds
 
 For now this is OK. Testing the performance of the webserver itself is trick when you take latency, internet connection speed etc. 
