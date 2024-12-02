@@ -1,7 +1,6 @@
 package util
 
 import (
-	"fmt"
 	"net"
 	"net/http"
 )
@@ -12,5 +11,5 @@ func GetIpFromRequest(r *http.Request) string {
 		// If X-Forwarded-For is empty, fall back to r.RemoteAddr
 		ip, _, _ = net.SplitHostPort(r.RemoteAddr)
 	}
-	return fmt.Sprintf("Client IP: %s\n", ip)
+	return ip
 }
