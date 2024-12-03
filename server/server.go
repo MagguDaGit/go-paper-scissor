@@ -11,8 +11,8 @@ func Serve() {
 	mux := http.NewServeMux()
 
 	// Handlers for routes
-	mux.HandleFunc("/random/", makeHandler(randomHandler))
-
+	mux.HandleFunc("/simulation/", makeHandler(randomSimulateHandler))
+	mux.HandleFunc("/play/", makeHandler(playRandomHandler))
 	// Create a custom server with the mux
 	server := &http.Server{
 		Addr:         ":8080",

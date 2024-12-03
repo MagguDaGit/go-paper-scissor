@@ -50,6 +50,19 @@ type Player interface {
 	GetName() PlayerName
 }
 
+// Generic player, has a chosen move
+type GenericPlayer struct {
+	Name       PlayerName
+	ChosenMove Move
+}
+
+func (p GenericPlayer) GetName() PlayerName {
+	return p.Name
+}
+func (p GenericPlayer) PlayMove() Move {
+	return p.ChosenMove
+}
+
 // Only plays random moves
 type RandomPlayer struct {
 	Name PlayerName

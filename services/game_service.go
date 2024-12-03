@@ -15,7 +15,7 @@ func PlayRandomGames(numberOfGames int) models.GameSummary {
 	player2.Name = models.PLAYER_2
 	results := make([]models.Result, numberOfGames, numberOfGames)
 	for i := 0; i < numberOfGames; i++ {
-		result := play(player1, player2)
+		result := Play(player1, player2)
 		results[i] = result
 	}
 	var elapsed float64 = time.Since(start).Abs().Seconds()
@@ -38,7 +38,7 @@ func determineWinner(m1 models.Move, m2 models.Move) int {
 	}
 }
 
-func play(p1 models.Player, p2 models.Player) models.Result {
+func Play(p1 models.Player, p2 models.Player) models.Result {
 	player1Move := p1.PlayMove()
 	player2Move := p2.PlayMove()
 	result := models.Result{}
