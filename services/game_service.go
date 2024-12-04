@@ -1,9 +1,11 @@
 package services
 
 import (
+	"sync"
 	"time"
 
 	"rubrumcreation.com/go-paper-scissor/models"
+	"rubrumcreation.com/go-paper-scissor/routines"
 )
 
 func PlayRandomGames(numberOfGames int) models.GameSummary {
@@ -13,14 +15,74 @@ func PlayRandomGames(numberOfGames int) models.GameSummary {
 
 	player2 := models.RandomPlayer{}
 	player2.Name = models.PLAYER_2
+	var elapsed float64 = time.Since(start).Abs().Seconds()
+	var results []models.Result
+	if numberOfGames < 100000 {
+		results = SimulateRandomGamesSync(numberOfGames, &player1, &player2)
+	} else {
+		results = SimulateRandomGamesASync(numberOfGames, &player1, &player2)
+	}
+	summary := models.ConstructSummary(results, elapsed)
+	return summary
+}
+
+func SimulateRandomGamesSync(numberOfGames int, player1 *models.RandomPlayer, player2 *models.RandomPlayer) []models.Result {
 	results := make([]models.Result, numberOfGames, numberOfGames)
 	for i := 0; i < numberOfGames; i++ {
 		result := Play(player1, player2)
 		results[i] = result
 	}
-	var elapsed float64 = time.Since(start).Abs().Seconds()
-	summary := models.ConstructSummary(results, elapsed)
-	return summary
+	return results
+}
+
+func SimulateRandomGamesASync(numberOfGames int, player1 *models.RandomPlayer, player2 *models.RandomPlayer) []models.Result {
+	resultsBuffer := make(chan []models.Result, numberOfGames) // Change channel to accept slices
+	var waitGroup sync.WaitGroup
+
+	// Get intervals for distributing games to workers
+	intervals, err := routines.GetIntervals(numberOfGames)
+	if err != nil {
+		panic(err) // Or handle error appropriately
+	}
+
+	// Start workers for each interval
+	for _, interval := range intervals {
+		waitGroup.Add(1)
+		go func(interval models.Interval) {
+			defer waitGroup.Done()
+			var batch []models.Result
+			for i := interval.Start; i < interval.End; i++ {
+				result := Play(player1, player2)
+				batch = append(batch, result)
+				if len(batch) >= 100 { // batch size for bulk sending
+					resultsBuffer <- batch
+					batch = nil
+				}
+			}
+			if len(batch) > 0 {
+				resultsBuffer <- batch
+			}
+		}(interval)
+	}
+
+	// Await all workers and close the results channel
+	go func() {
+		waitGroup.Wait()
+		close(resultsBuffer)
+	}()
+
+	// Collect results
+	var results []models.Result
+	for batch := range resultsBuffer {
+		results = append(results, batch...)
+	}
+
+	return results
+}
+
+func storeResultInChannel(p1 models.Player, p2 models.Player, results chan<- models.Result, wg *sync.WaitGroup) {
+	defer wg.Done()
+	results <- Play(p1, p2)
 }
 
 // Direct comparrison with predefined rules. Could use map lookup, modulo or bitmasking.

@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
-func TestRandomGame(t *testing.T) {
+func TestHundredRandomGame(t *testing.T) {
 	services.PlayRandomGames(100)
+}
+
+func TestTenMillionRandomGames(t *testing.T) {
+	services.PlayRandomGames(10000000)
 }

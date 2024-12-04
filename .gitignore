@@ -1,5 +1,7 @@
 cpu.prof
 tests.test
+*cpu.out 
+memory.out
+tests.tests
 
 
-/tests/tests.test

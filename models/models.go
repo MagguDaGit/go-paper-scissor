@@ -144,3 +144,9 @@ func (summary GameSummary) PrintSummary() {
 	fmt.Printf("Winner: %s \n", summary.Winner)
 	fmt.Println("--- END OF SUMMARY ---")
 }
+
+// Interval for a given number of games
+type Interval struct {
+	Start int
+	End   int
+}
