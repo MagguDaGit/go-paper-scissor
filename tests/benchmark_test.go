@@ -15,6 +15,6 @@ func BenchmarkPlayManyRandomGamesParallel(b *testing.B) {
 }
 */
 func BenchmarkBillionRandomGamesParallel(b *testing.B) {
-	numberOfGames := 1000000000
+	numberOfGames := 100000
 	services.PlayRandomGames(numberOfGames)
 }

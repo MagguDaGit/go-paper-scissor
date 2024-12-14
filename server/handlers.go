@@ -19,10 +19,18 @@ func randomSimulateHandler(w http.ResponseWriter, r *http.Request, query url.Val
 
 	// Convert and validate the expected value
 	numOfGames, err := util.ConvertInt(paramValue)
+  
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
+
+  //Max number of games to be simulated will be 10 000 000
+  if numOfGames > 10000000 {
+    http.Error(w, "Cannot simulate number of games greater than 10 000 000", 400)
+    return 
+  }
+
 	// Call service for application logic
 	summary := services.PlayRandomGames(numOfGames)
 	w.Header().Set("Content-Type", "application/json")
